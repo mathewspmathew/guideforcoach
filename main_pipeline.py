@@ -3,7 +3,7 @@ from src.preprocess import DataPreprocessor
 from src.model import SimilarityEngine
 
 def run_pipeline():
-    print("--- 🚀 Starting Moneyball Pipeline ---")
+    print("--- Starting Moneyball Pipeline ---")
 
     # Step 1: Data Engineering
     print("\n[Step 1] Loading and Cleaning Data...")

@@ -13,7 +13,7 @@ class SimilarityEngine:
 
     def train(self, df: pd.DataFrame):
         """
-        Trains the KNN model and saves artifacts.
+        Trains the model and saves artifacts.
         """
         self.df = df
 
@@ -28,8 +28,7 @@ class SimilarityEngine:
 
         # 4. Save Artifacts (MLOps)
         os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
-        joblib.dump(self.model, MODEL_PATH)
-        joblib.dump(self.scaler, SCALER_PATH)
+        joblib.dump()
         joblib.dump(self.df, DB_PATH)
         print("✅ Model trained and saved successfully.")
 

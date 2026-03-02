@@ -12,7 +12,7 @@ llm = ChatGoogleGenerativeAI(
     temperature=0,
 )
 
-print("\n👔 DIRECTOR: Writing final report...")
+print("\n DIRECTOR: Writing final report...")
 
 # Define the Prompt
 template = """You are the Sporting Director of a top football club.
