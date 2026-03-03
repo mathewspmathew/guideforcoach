@@ -22,8 +22,7 @@ class DataPreprocessor:
             df = df[df['Pos'] != 'GK']
             df = df[df['90s'] >= 5.0].copy() # Must have played at least 5 games
 
-            # 2. Feature Engineering: Calculate Per 90 Stats
-            # Using .loc to avoid SettingWithCopy warnings
+            # 2. Feature Engineering: calculate Per 90 Stats
             df['npxG_p90'] = df['npxG'] / df['90s']
             df['xAG_p90'] = df['xAG'] / df['90s']
             df['PrgP_p90'] = df['PrgP'] / df['90s']
@@ -34,7 +33,7 @@ class DataPreprocessor:
             df['KP_p90'] = df['KP'] / df['90s']
 
             self.df = df.reset_index(drop=True)
-            print(f"✅ Data Processed. Active Players: {len(self.df)}")
+            print(f"Data Processed. Active Players: {len(self.df)}")
             return self.df
 
         except FileNotFoundError:
