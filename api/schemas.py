@@ -4,23 +4,18 @@ Pydantic models for request and response bodies.
 from pydantic import BaseModel
 
 
-# ---------------------------------------------------------------------------
-# Pipeline
-# ---------------------------------------------------------------------------
+# pipeline response model - basically in this schema pipeline is going to return
 
 class PipelineRunResponse(BaseModel):
     status: str
     message: str
 
 
-# ---------------------------------------------------------------------------
-# Agent
-# ---------------------------------------------------------------------------
 
 class AgentRequest(BaseModel):
     player_name: str
 
-
+# schema for response model of agent router - in /scout 
 class AgentResponse(BaseModel):
     target_player: str
     final_report: str

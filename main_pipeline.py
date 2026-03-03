@@ -3,26 +3,25 @@ from src.preprocess import DataPreprocessor
 from src.model import SimilarityEngine
 
 def run_pipeline():
-    print("--- Starting Moneyball Pipeline ---")
+    print("--- Starting ML Pipeline ---")
 
-    # Step 1: Data Engineering
+    # Data Engineering
     print("\n[Step 1] Loading and Cleaning Data...")
     processor = DataPreprocessor(RAW_DATA_PATH)
     df_clean = processor.load_clean_data()
 
-    # Step 2: Model Training
     print("\n[Step 2] Training AI Model...")
     engine = SimilarityEngine()
     engine.train(df_clean)
 
-    # Step 3: Test Inference (Sanity Check)
+    #Test Inference - quick test
     print("\n[Step 3] Testing Inference...")
-    test_player = "Haaland"  # Change this to test
+    test_player = "Haaland"  #test player
     result = engine.inference(test_player)
 
     print(f"\n🔎 Query: {test_player}")
     if "error" in result:
-        print(f"❌ {result['error']}")
+        print(f"{result['error']}")
     else:
         print(f"✅ Found match for: {result['target']} ({result['target_squad']})")
         print("   Top Recommendations:")

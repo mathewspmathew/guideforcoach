@@ -1,6 +1,5 @@
 """
-Entry-point: python main.py
-Starts the FastAPI server with uvicorn.
+If we run: python main.py. this will work the fastapi
 """
 import uvicorn
 
@@ -9,5 +8,5 @@ if __name__ == "__main__":
         "api.main:app",
         host="0.0.0.0",
         port=8000,
-        reload=True,  # auto-reload on code changes during development
+        reload=True,  
     )

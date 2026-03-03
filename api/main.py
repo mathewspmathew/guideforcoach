@@ -1,5 +1,4 @@
 """
-FastAPI application factory.
 Mount all routers here and configure app metadata.
 """
 from fastapi import FastAPI
@@ -14,15 +13,13 @@ app = FastAPI(
     )
 )
 
-# ── Routers ────────────────────────────────────────────────────────────────
+# we have each router for ml pipeline and agents
 app.include_router(pipeline.router)
 app.include_router(agent.router)
 
 
-# ── Health check ───────────────────────────────────────────────────────────
 @app.get("/health", tags=["Health"])
 def health_check():
-    """Simple liveness probe."""
     return {"status": "ok"}
 
 @app.get("/")

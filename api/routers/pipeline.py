@@ -17,7 +17,6 @@ def run_pipeline_endpoint():
     2. Train the similarity model
     3. Run a sanity-check inference
 
-    This is a blocking call — it may take a minute depending on dataset size.
     """
     try:
         run_pipeline()
