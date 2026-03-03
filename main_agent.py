@@ -7,26 +7,24 @@ import re
 from resultfilecreate import create_file
 
 def main():
-    # 1. Build the Agent System
+    # here it builds the Agent System
     app = build_app()
 
-    # 2. Define the Input
     target = input("Enter the player you want to replace (e.g., 'Rodri'): ")
 
     inputs = {"target_player": target}
 
     print(f"\n🚀 STARTING AGENT WORKFLOW FOR: {target}")
 
-    # 3. Run the Graph
+    # Run the Graph
     # We iterate through the stream to see steps happening in real-time
     for output in app.stream(inputs):
         for key, value in output.items():
             print(f"✅ Finished Node: {key}")
 
-    # 4. Get Final State
-    # (Note: In a real app, you'd extract this from the last yielded value)
-    # Rerunning just to fetch the final state object for printing (simplified)
-    # In production, use .invoke() if you don't need streaming
+    # final step: Get Final State
+    # Rerunning just to fetch the final state object for printing
+    # In production, we can use .invoke() for avoiding streaming
 
     final_state = app.invoke(inputs)
     print("\n\n" + "="*40)

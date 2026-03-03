@@ -15,7 +15,7 @@ class DataPreprocessor:
         and calculates per-90 stats.
         """
         try:
-            # Load only necessary columns to save memory
+            # Load only necessary columns
             df = pd.read_csv(self.file_path, usecols=lambda x: x in REQUIRED_COLS or x in ['Player', 'Squad', 'Pos', '90s'])
 
             # 1. Filter: Remove Goalkeepers and Low Minutes
@@ -33,15 +33,12 @@ class DataPreprocessor:
             df['Recov_p90'] = df['Recov'] / df['90s']
             df['KP_p90'] = df['KP'] / df['90s']
 
-            # 3. Cleanup: Fill NaNs with 0
-            # df.fillna(0, inplace=True)
-
             self.df = df.reset_index(drop=True)
             print(f"✅ Data Processed. Active Players: {len(self.df)}")
             return self.df
 
         except FileNotFoundError:
-            raise FileNotFoundError(f"❌ Could not find file at {self.file_path}")
+            raise FileNotFoundError(f"Could not find file at {self.file_path}")
 
 # if __name__ == "__main__":
 #     preprocessor = DataPreprocessor(RAW_DATA_PATH)

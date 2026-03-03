@@ -3,7 +3,7 @@ from pathlib import Path
 
 DATA_DIR = Path("data")
 MODEL_DIR = Path("models")
-
+#from here other files are importing the paths. If we change here, it will change everywhere
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -12,17 +12,16 @@ MODEL_PATH = MODEL_DIR/ "knn_model.pkl"
 SCALER_PATH = MODEL_DIR/ "scaler.pkl"
 DB_PATH = MODEL_DIR/ "player_database.pkl" #for cleaned data
 
-# for neighbors
 N_NEIGHBORS = 5
 METRIC = 'euclidean' #'cosine' is also good, but euclidean works well for magnitude
 
-# The raw columns we need from the CSV to calculate the final stats
+#the raw columns we need from the CSV to calculate the final stats
 REQUIRED_COLS = [
     'Player', 'Nation', 'Pos', 'Squad', 'Age', '90s',
     'npxG', 'xAG', 'PrgP', 'PrgC', 'TklW', 'Int', 'Recov', 'KP'
 ]
 
-# The final calculated features (Per 90) that go into the ML Model
+#The final calculated features (Per 90) that go into the ML Model
 FEATURES = [
     'npxG_p90',   # Finishing
     'xAG_p90',    # Assisting

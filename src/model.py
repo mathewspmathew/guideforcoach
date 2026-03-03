@@ -17,20 +17,16 @@ class SimilarityEngine:
         """
         self.df = df
 
-        # 1. Extract Feature Matrix
         X = df[FEATURES].values
 
-        # 2. Scale Data (0-1)
         X_scaled = self.scaler.fit_transform(X)
 
-        # 3. Fit Model
         self.model.fit(X_scaled)
 
-        # 4. Save Artifacts (MLOps)
         os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
         joblib.dump()
         joblib.dump(self.df, DB_PATH)
-        print("✅ Model trained and saved successfully.")
+        print("Model trained and saved successfully.")
 
     def inference(self, player_name: str):
         """
@@ -45,8 +41,8 @@ class SimilarityEngine:
             self.model = joblib.load(MODEL_PATH)
             self.scaler = joblib.load(SCALER_PATH)
 
-        # 1. Find the Target Player
-        # Case-insensitive partial match
+        # Find the Target Player
+        #Case-insensitive partial match
         matches = self.df[self.df['Player'].str.contains(player_name, case=False, na=False)]
 
         if matches.empty:
@@ -56,16 +52,16 @@ class SimilarityEngine:
         target_idx = matches.index[0]
         target_data = self.df.loc[target_idx]
 
-        # 2. Prepare Vector
+        #Prepare Vector
         vector = target_data[FEATURES].values.reshape(1, -1)
         vector_scaled = self.scaler.transform(vector)
 
-        # 3. Find Neighbors
+        #Find Neighbors
         distances, indices = self.model.kneighbors(vector_scaled)
 
-        # 4. Format Output
+        #Format Output
         results = []
-        # Loop through neighbors (Skip index 0 as it's the player themselves)
+        #Loop through neighbors (Skip index 0 as it's the player themselves)
         for i in range(1, len(indices[0])):
             idx = indices[0][i]
             dist = distances[0][i]

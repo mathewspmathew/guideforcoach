@@ -10,7 +10,6 @@ import os
 load_dotenv()
 
 
-# Initialize Tools
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
     google_api_key=os.getenv("GOOGLE_API_KEY"),
@@ -19,11 +18,11 @@ llm = ChatGoogleGenerativeAI(
 search_tool = TavilySearch(max_results=2)
 ml_engine = SimilarityEngine()
 
-# --- NODE 1: THE SCOUT (Uses your ML Code) ---
+# NODE 1: THE SCOUT (by ML model, taking inference)
 def scout_node(state: AgentState):
     print(f"\n🕵️  SCOUT: Looking for players similar to {state['target_player']}...")
 
-    # 1. Load Data/Model (Lazy loading handled in class)
+    # Load Data/Model (Lazy loading handled in class)
     # We assume model is already trained via main_pipeline.py
     # If not, it will try to load from disk
     result = ml_engine.inference(state['target_player'])
@@ -32,10 +31,10 @@ def scout_node(state: AgentState):
         # Fallback if player not found
         return {"similar_players": [], "market_research": f"Error: {result['error']}"}
 
-    # 2. Return the list of matches to the State
+    # It Return the list of matches to the State
     return {"similar_players": result['recommendations']}
 
-# --- NODE 2: THE RESEARCHER (Uses Web Search) ---
+# NODE 2: THE RESEARCHER (Uses Web Search - using Tavily)
 def researcher_node(state: AgentState):
     players = state['similar_players']
     if not players:
@@ -55,7 +54,7 @@ def researcher_node(state: AgentState):
                 search_results = search_tool.invoke(query)
 
                 # 2. Extract snippets from the 'results' key
-                # Modern TavilySearch returns: {"results": [{"content": "...", ...}, ...]}
+                #TavilySearch returns: {"results": [{"content": "...", ...}, ...]}
                 if "results" in search_results:
                     snippets = "\n".join([res.get('content', '') for res in search_results['results']])
                     research_summary += f"--- {name} ({team}) ---\n{snippets}\n\n"
@@ -63,18 +62,18 @@ def researcher_node(state: AgentState):
                     research_summary += f"No results found for {name}.\n"
 
             except Exception as e:
-                # Print the actual error to your console for debugging
+                #Print the actual error to console for debugging
                 print(f"Error researching {name}: {e}")
                 research_summary += f"Could not find data for {name}.\n"
 
 
         return {"market_research": research_summary}
 
-# --- NODE 3: THE DIRECTOR (Uses LLM) ---
+# NODE 3: THE DIRECTOR (Uses LLM)
 def director_node(state: AgentState):
     print("\n👔 DIRECTOR: Writing final report...")
 
-    # Define the Prompt
+    #Define the Prompt - basically this is the prompt to llm for the final answer
     template = """You are the Sporting Director of a top football club.
 
     GOAL: Write a scouting report recommending a replacement for: {target}
@@ -98,6 +97,14 @@ def director_node(state: AgentState):
 
     prompt = ChatPromptTemplate.from_template(template)
     chain = prompt | llm
+# chain = prompt | llm  --- this is an alternative for->
+# formatted_prompt = prompt.invoke({"topic": "bears"})
+
+# # 2. Pass that formatted prompt directly into the LLM
+# response = llm.invoke(formatted_prompt)
+
+# # 3. Access the content
+# print(response.content)
 
     # Run the LLM
     response = chain.invoke({
