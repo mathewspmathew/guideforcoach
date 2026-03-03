@@ -15,8 +15,9 @@ class PipelineRunResponse(BaseModel):
 class AgentRequest(BaseModel):
     player_name: str
 
-# schema for response model of agent router - in /scout 
+# schema for response model of agent router - in /scout
 class AgentResponse(BaseModel):
     target_player: str
     final_report: str
-    report_file: str  # relative path to the saved .md file in reports/
+    report_file: str           # relative path to the saved .md file in reports/
+    cached: bool = False       # True when result was served from in-memory cache
