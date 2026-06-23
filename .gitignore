@@ -4,3 +4,4 @@ models/
 reports/
 .venv/
 *.egg-info/
+CLAUDE.md
